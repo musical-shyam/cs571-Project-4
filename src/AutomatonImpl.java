@@ -35,37 +35,70 @@ public class AutomatonImpl implements Automaton {
     @Override
     public void addState(int s, boolean is_start, boolean is_accept) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addState'");
+        if (is_start) {
+            start_states.add(s);
+        }
+        if (is_accept) {
+            accept_states.add(s);
+        }
+        //throw new UnsupportedOperationException("Unimplemented method 'addState'");
     }
 
     @Override
     public void addTransition(int s_initial, char label, int s_final) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addTransition'");
+        StateLabelPair key = new StateLabelPair(s_initial, label);
+        if (!transitions.containsKey(key)) {
+            transitions.put(key, new HashSet<Integer>());
+        }
+        transitions.get(key).add(s_final);
+        //throw new UnsupportedOperationException("Unimplemented method 'addTransition'");
     }
 
     @Override
     public void reset() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'reset'");
+        current_states = new HashSet<>(start_states);
+        //throw new UnsupportedOperationException("Unimplemented method 'reset'");
     }
 
     @Override
     public void apply(char input) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'apply'");
+        HashSet<Integer> new_states = new HashSet<Integer>();
+        for (int state : current_states) {
+            StateLabelPair key = new StateLabelPair(state, input);
+            if (transitions.containsKey(key)) {
+                new_states.addAll(transitions.get(key));
+            }
+        }
+        current_states = new_states;
+        //throw new UnsupportedOperationException("Unimplemented method 'apply'");
     }
 
     @Override
     public boolean accepts() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'accepts'");
+        for (int state : current_states) {
+            if (accept_states.contains(state)) {
+                return true;
+            }
+        }
+        return false;
+        //throw new UnsupportedOperationException("Unimplemented method 'accepts'");
     }
 
     @Override
     public boolean hasTransitions(char label) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'hasTransitions'");
+        for (int state : current_states) {
+            StateLabelPair key = new StateLabelPair(state, label);
+            if (transitions.containsKey(key) && !transitions.get(key).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+        //throw new UnsupportedOperationException("Unimplemented method 'hasTransitions'");
     }
 
 }
