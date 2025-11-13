@@ -18,13 +18,7 @@ public class CompilerFrontendImpl extends CompilerFrontend {
      * DIV: /
      * WHITE_SPACE (' '|\n|\r|\t)*
      */
-    private Automaton makeSingleCharToken(char c) {
-        AutomatonImpl a = new AutomatonImpl();
-        a.addState(0, true, false);
-        a.addState(1, false, true);
-        a.addTransition(0, c, 1);
-        return a;
-    }
+    
     @Override
     protected void init_lexer() {
         // TODO Auto-generated method stub
@@ -59,6 +53,13 @@ public class CompilerFrontendImpl extends CompilerFrontend {
         lex.add_automaton(TokenType.WHITE_SPACE, whiteSpace);
         
         //throw new UnsupportedOperationException("Unimplemented method 'init_lexer'");
+    }
+    private Automaton makeSingleCharToken(char c) {
+        AutomatonImpl a = new AutomatonImpl();
+        a.addState(0, true, false);
+        a.addState(1, false, true);
+        a.addTransition(0, c, 1);
+        return a;
     }
 
 }
